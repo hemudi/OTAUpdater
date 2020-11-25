@@ -13,7 +13,6 @@ public class BleManager {
     }
 
     private BleManager(){}
-
     public static BleManager getInstance(){
         return LazyHolder.INSTANCE;
     }
@@ -25,7 +24,7 @@ public class BleManager {
         return !context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
     }
 
-    public boolean bluetoothIsNotEnabled(){
+    public boolean isNotEnabled(){
         return !BleManager.getInstance().getBluetoothAdapter().isEnabled();
     }
 
