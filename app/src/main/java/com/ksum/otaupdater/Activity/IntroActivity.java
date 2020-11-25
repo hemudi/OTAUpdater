@@ -49,7 +49,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void checkBluetoothEnable(){
-        if(!BleManager.getInstance().bluetoothIsNotEnabled())
+        if(!BleManager.getInstance().isNotEnabled())
             BleManager.getInstance().setBleEnable();
     }
 
