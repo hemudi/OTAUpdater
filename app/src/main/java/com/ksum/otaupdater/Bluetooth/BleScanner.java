@@ -64,7 +64,7 @@ public class BleScanner {
         }
     }
 
-    public void startScan(){
+    public synchronized void startScan(){
         new Handler().postDelayed(this::startScan, RESTART_DELAY_TIME);
 
         stopScan();
@@ -82,7 +82,7 @@ public class BleScanner {
         }
     }
 
-    private void setScanSettings(){
+    private synchronized void setScanSettings(){
         scanSettings = new ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                 .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
@@ -91,14 +91,12 @@ public class BleScanner {
 
     private Disposable scanSubscription;
 
-    private void scanProcess(){
+    private synchronized void scanProcess(){
         scanSubscription = mRxBleClient.scanBleDevices(
                 scanSettings,
                 scanFilterList.toArray(new ScanFilter[0])
         ).subscribe(
-                scanResult -> {
-                    // TODO MainActivity 로 scanResult 전송
-                },
+                scanResult -> BleDataManager.getInstance().addScanData(scanResult),
                 throwable -> {
                     Log.d(Tag.BLE_SCANNER, "scanProcess Failed");
                     throwable.printStackTrace();
@@ -106,7 +104,7 @@ public class BleScanner {
         );
     }
 
-    private void scanProcessBackground(){
+    private synchronized void scanProcessBackground(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             try {
                 mRxBleClient.getBackgroundScanner()
@@ -117,7 +115,12 @@ public class BleScanner {
         }
     }
 
-    public void stopScan(){
+    public synchronized void stopScan(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            stopBackgroundScan();
+            return;
+        }
+
         if(scanSubscription != null && !scanSubscription.isDisposed()) {
             scanSubscription.dispose();
         }
@@ -125,7 +128,7 @@ public class BleScanner {
         scanSubscription = null;
     }
 
-    public void stopBackgroundScan(){
+    public synchronized void stopBackgroundScan(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             mRxBleClient.getBackgroundScanner().stopBackgroundBleScan(callbackIntent);
             Log.d(Tag.BLE_SCANNER, "Background Scan Stop!");

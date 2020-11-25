@@ -1,8 +1,7 @@
 package com.ksum.otaupdater.Vo;
 
-import android.bluetooth.le.ScanRecord;
-
 import com.polidea.rxandroidble2.RxBleDevice;
+import com.polidea.rxandroidble2.scan.ScanRecord;
 
 public class DeviceInfo {
     String name;

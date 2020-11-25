@@ -48,7 +48,7 @@ public class ScanReceiver extends BroadcastReceiver {
             }
 
             for(ScanResult scanResult : scanResultList){
-                // TODO Data 보내기
+                BleDataManager.getInstance().addScanData(scanResult);
             }
         } catch (BleScanException exception){
             Log.d(Tag.SCAN_RECEIVER, "Failed to scan devices : " + exception.getMessage());
