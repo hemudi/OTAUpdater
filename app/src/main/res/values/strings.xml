@@ -2,8 +2,8 @@
     <string name="app_name">OTA_Project</string>
 
     <!-- contentDescription -->
-    <string name="image_button_status">OTA STATUS</string>
-    <string name="image_view_logo">OTA_PROJECT_LOGO</string>
+    <string name="description_image_button_status">OTA STATUS IMAGE BUTTON</string>
+    <string name="description_image_view_logo">OTA_PROJECT_LOGO</string>
 
     <!-- Button Text -->
     <string name="button_file_status">FILE</string>
@@ -23,6 +23,7 @@
     <string name="item_status_updating">업데이트 중</string>
     <string name="item_status_waiting">대기 중</string>
     <string name="item_status_no_files">파일 필요</string>
+    <string name="item_status_no_implement">구현 중</string>
 
     <!-- Permission Check Rationale -->
     <string name="permission_default_rationale">어플의 원활한 사용을 위해 권한 승인이 필요합니다!</string>

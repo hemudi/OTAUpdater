@@ -75,15 +75,15 @@
                 >
 
                 <ImageButton
-                    android:id="@+id/imageButton_state"
+                    android:id="@+id/imageButton_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     app:srcCompat="@android:drawable/ic_media_play"
-                    android:contentDescription="" />
+                    android:contentDescription="@string/description_image_button_status" />
 
                 <TextView
-                    android:id="@+id/textView_state"
+                    android:id="@+id/textView_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
