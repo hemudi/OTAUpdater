@@ -34,7 +34,7 @@ public class IntroActivity extends AppCompatActivity {
             startActivity(toMainIntent);
         }
         else {
-            finishWithDelay(2000);
+            new Handler().postDelayed(this::finish, 2000);
         }
 
     }
@@ -57,15 +57,6 @@ public class IntroActivity extends AppCompatActivity {
         IntentFilter bleIntentFilter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         BleReceiver bleReceiver = new BleReceiver();
         registerReceiver(bleReceiver, bleIntentFilter);
-    }
-
-    private void finishWithDelay(long delay){
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
-        }, delay);
     }
 
 }
