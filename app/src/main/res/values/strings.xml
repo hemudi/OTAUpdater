@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">OTA_Project</string>
+
+    <!-- contentDescription -->
+    <string name="image_button_status">OTA STATUS</string>
+    <string name="image_view_logo">OTA_PROJECT_LOGO</string>
+
+    <!-- Button Text -->
+    <string name="button_file_status">FILE</string>
+    <string name="button_filter">FILTER</string>
+    <string name="button_scan_start">Start Scanning</string>
+    <string name="button_scan_stop">Stop Scanning</string>
+
+    <!-- TextView Sample Text -->
+    <string name="item_address">Mac Address</string>
+    <string name="item_device_name">Device Name</string>
+    <string name="item_connectable">NonConnectable / Connectable</string>
+
+    <!-- Device State Text -->
+    <string name="item_status_updatable">업데이트 가능</string>
+    <string name="item_status_non_updatable">업데이트 불가능</string>
+    <string name="item_status_checking">상태 체크 중</string>
+    <string name="item_status_updating">업데이트 중</string>
+    <string name="item_status_waiting">대기 중</string>
+    <string name="item_status_no_files">파일 필요</string>
+
+    <!-- Permission Check Rationale -->
+    <string name="permission_default_rationale">어플의 원활한 사용을 위해 권한 승인이 필요합니다!</string>
+    <string name="permission_location_rationale">블루투스 기능의 원활한 사용을 위해 위치 권한이 필요합니다!</string>
+
+    <!-- Toast Message -->
+    <string name="toast_is_not_support_ble">해당 기기는 BLE 기능을 지원하지 않아 어플 사용이 불가능합니다.</string>
+</resources>
