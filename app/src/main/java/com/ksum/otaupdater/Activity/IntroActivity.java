@@ -37,6 +37,8 @@ public class IntroActivity extends AppCompatActivity {
             new Handler().postDelayed(this::finish, 2000);
         }
 
+        finish();
+
     }
 
     private boolean isBleSupported(){

@@ -31,4 +31,6 @@
 
     <!-- Toast Message -->
     <string name="toast_is_not_support_ble">해당 기기는 BLE 기능을 지원하지 않아 어플 사용이 불가능합니다.</string>
+    <string name="toast_permission_denied">권한 승인이 거부되어 어플이 종료됩니다.</string>
+
 </resources>

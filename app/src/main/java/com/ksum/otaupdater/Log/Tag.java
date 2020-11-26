@@ -8,4 +8,5 @@ public class Tag {
     public static final String BLE_SCANNER = "BLE_SCANNER";
     public static final String SCAN_RECEIVER = "SCAN_RECEIVER";
     public static final String BLE_DATA_MANAGER = "BLE_DATA_MANAGER";
+    public static final String PERMISSION_MANAGER = "PERMISSION_MANAGER";
 }

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -22,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/button_file_status"
-            tools:ignore="ButtonStyle"/>
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/button_filter"
@@ -30,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/button_filter"
-            tools:ignore="ButtonStyle"/>
+            tools:ignore="ButtonStyle" />
     </LinearLayout>
 
     <LinearLayout
@@ -38,16 +39,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/container_toolbar"
-        >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/container_toolbar">
 
         <FrameLayout
             android:id="@+id/frame_blank"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </FrameLayout>
+            android:layout_height="wrap_content"></FrameLayout>
 
     </LinearLayout>
 
@@ -70,8 +69,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"></androidx.recyclerview.widget.RecyclerView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_device_list"
@@ -80,8 +78,7 @@
             android:layout_weight="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"></androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
     <LinearLayout
@@ -110,7 +107,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/container_bottom_button"
         app:layout_constraintEnd_toEndOf="@+id/container_recyclerview"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_toolbar">
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/container_toolbar"></LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
