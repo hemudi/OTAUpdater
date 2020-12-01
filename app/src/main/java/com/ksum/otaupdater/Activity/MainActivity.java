@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.ItemTouchHelper.Callback;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +31,7 @@ import com.ksum.otaupdater.Bluetooth.BleManager;
 import com.ksum.otaupdater.Bluetooth.BleReceiver;
 import com.ksum.otaupdater.Bluetooth.BleScanner;
 import com.ksum.otaupdater.Interface.DataReceiver;
+import com.ksum.otaupdater.ItemTouchHelper.ItemTouchHelperCallback;
 import com.ksum.otaupdater.Log.Tag;
 import com.ksum.otaupdater.Manager.PermissionManager;
 import com.ksum.otaupdater.R;
@@ -68,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
     private boolean isScanning;
     private Timer viewUpdateTimer;
 
+    private ItemTouchHelper itemTouchHelper;
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
         initBluetooth();                        // 블루투스 설정
 
         initRecyclerView();                     // 리사이클러뷰 초기화
-        startViewUpdate();                      // 리사이클러뷰 업데이트 시작
     }
 
     @Override
@@ -95,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
     protected void onDestroy() {
         super.onDestroy();
         BleDataManager.getInstance().unbindReceiver();
-        stopViewUpdate();
     }
 
     private void initialize(){
@@ -139,6 +143,26 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
                 return;
             removeUpdateList(deviceInfo);
         });
+
+//        itemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(scanAdapter));
+//        itemTouchHelper.attachToRecyclerView(rvScan);
+
+        ItemTouchHelper.SimpleCallback touchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Toast.makeText(MainActivity.this, "Swipe!", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
+        itemTouchHelper.attachToRecyclerView(rvScan);
+
+
 
     }
 
@@ -241,12 +265,14 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
             BleDataManager.getInstance().stopTimer();
             scanBtn.setText(getString(R.string.button_scan_start));
             Toast.makeText(this, getString(R.string.toast_scan_stop), Toast.LENGTH_LONG).show();
+            new Handler().postDelayed(this::stopViewUpdate, 1000);
         }
         else {
             isScanning = BleScanner.getInstance().startScan();
             BleDataManager.getInstance().startTimer();
             scanBtn.setText(getString(R.string.button_scan_stop));
             Toast.makeText(this, getString(R.string.toast_scan_start), Toast.LENGTH_LONG).show();
+            startViewUpdate();                      // 리사이클러뷰 업데이트 시작
         }
     }
 

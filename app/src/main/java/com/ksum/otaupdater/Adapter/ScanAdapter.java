@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ksum.otaupdater.ItemTouchHelper.ItemTouchHelperListener;
 import com.ksum.otaupdater.Log.Tag;
 import com.ksum.otaupdater.R;
 import com.ksum.otaupdater.Vo.DeviceInfo;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ViewHolder> {
+public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ViewHolder> implements ItemTouchHelperListener {
     private Context context;
     private ArrayList<DeviceInfo> dataList;
     private OnStateButtonClickListener onStateButtonClickListener;
@@ -49,13 +51,13 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ViewHolder> {
             ButterKnife.bind(this, itemView);
 
             /* stateImage onClick */
-            stateImage.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-
-                if(position != RecyclerView.NO_POSITION) {
-                    onStateButtonClickListener.onStateClick(dataList.get(position));
-                }
-            });
+//            stateImage.setOnClickListener(v -> {
+//                int position = getAdapterPosition();
+//
+//                if(position != RecyclerView.NO_POSITION) {
+//                    onStateButtonClickListener.onStateClick(dataList.get(position));
+//                }
+//            });
         }
     }
 
@@ -105,5 +107,16 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ViewHolder> {
 
     public DeviceInfo getItem(int position){
         return dataList.get(position);
+    }
+
+    @Override
+    public boolean onItemMove(int from_position, int to_position) {
+        return false;
+    }
+
+    @Override
+    public void onItemSwipe(int position) {
+        //items.remove(position);
+        Toast.makeText(context, "스와이프", Toast.LENGTH_SHORT).show();
     }
 }
