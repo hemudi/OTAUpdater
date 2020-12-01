@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -21,12 +22,14 @@ import com.ksum.otaupdater.Adapter.UpdateAdapter;
 import com.ksum.otaupdater.Bluetooth.BleDataManager;
 import com.ksum.otaupdater.Bluetooth.BleManager;
 import com.ksum.otaupdater.Bluetooth.BleScanner;
+import com.ksum.otaupdater.Dialog.ResetDialog;
 import com.ksum.otaupdater.Interface.DataReceiver;
 import com.ksum.otaupdater.ItemTouchHelper.ItemTouchHelperCallback;
 import com.ksum.otaupdater.Log.Tag;
 import com.ksum.otaupdater.Manager.PermissionManager;
 import com.ksum.otaupdater.R;
 import com.ksum.otaupdater.Vo.DeviceInfo;
+import com.ksum.otaupdater.Dialog.ResetDialog.ResetDialogClickListener;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
     private ScanAdapter scanAdapter;
     private UpdateAdapter updateAdapter;
     private ConcurrentHashMap<String, DeviceInfo> scannedMap;           // scan 한 기기
-    private ConcurrentHashMap<String, DeviceInfo> removeMap;            // 제거 대상 기기
+    private ConcurrentHashMap<String, DeviceInfo> blackList;            // 제거 대상 기기
     private ArrayList<DeviceInfo> scannedList;                          // scan 한 기기 adapter 용
     private ArrayList<DeviceInfo> updateList;                           // update 할 기기 adapter 용
 
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
         isScanning = false;
 
         scannedMap = new ConcurrentHashMap<>();
-        removeMap = new ConcurrentHashMap<>();
+        blackList = new ConcurrentHashMap<>();
         scannedList = new ArrayList<>();
         updateList = new ArrayList<>();
 
@@ -109,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
     private void setRecyclerView(RecyclerView recyclerView){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        //recyclerView.setItemAnimator(null);  => 혹시 이거 땜??
+//        recyclerView.setItemAnimator(null);  => 혹시 이거 땜??
     }
 
     private void initRecyclerView(){
@@ -132,7 +135,11 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
             }
 
             @Override
-            public void removeDevice(String address) {
+            public void removeDevice(DeviceInfo deviceInfo) {
+                // scanList + scanMap 에서 제거하고
+                // blackList 에 추가하기
+
+                addBlackList(deviceInfo);
 
             }
         });
@@ -148,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
 
     }
 
+    /* RecyclerView Control ----------------------------------------------------------------------------------------------------------------*/
     private void changeRvUpdateVisibility(){
         if(updateList.size() > 0)
             rvUpdate.setVisibility(View.VISIBLE);
@@ -159,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
         deviceInfo.setIsWaiting(true);                            // 대기 상태 true
         updateList.add(deviceInfo);                               // 업데이트 리스트 추가
         scannedList.remove(deviceInfo);                           // 스캔 리스트 제거
-        removeMap.put(deviceInfo.getAddress(), deviceInfo);       // 제거 리스트 추가
+        blackList.put(deviceInfo.getAddress(), deviceInfo);       // 제거 리스트 추가
         changeRvUpdateVisibility();                               // 업데이트 리스트 visibility 변경
     }
 
@@ -169,21 +177,22 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
             deviceInfo.setIsWaiting(false);                       // 대기 상태 false
             scannedList.add(deviceInfo);                          // 스캔 리스트 추가
             updateList.remove(deviceInfo);                        // 업데이트 리스트 제거
-            removeMap.remove(deviceInfo.getAddress());            // 제거 리스트에서 제거
+            blackList.remove(deviceInfo.getAddress());            // 제거 리스트에서 제거
         }
 
         changeRvUpdateVisibility();                               // 업데이트 리스트 visibility 변경
     }
 
-    private void addRemoveMap(DeviceInfo deviceInfo){
+    private void addBlackList(DeviceInfo deviceInfo){
         if(deviceInfo == null)
             return;
 
         if(deviceInfo.isWaiting() || deviceInfo.isUpdating())
             return;
 
-        scannedList.remove(deviceInfo);                           // 스캔 리스트에서 삭제
-        removeMap.put(deviceInfo.getAddress(), deviceInfo);       // 업데이트 리스트에 추가
+        scannedMap.remove(deviceInfo.getAddress());
+        scannedList.remove(deviceInfo);                           // 스캔 리스트에서 삭제 -> scanMap 에서도 없애야되나
+        blackList.put(deviceInfo.getAddress(), deviceInfo);       // 업데이트 리스트에 추가
     }
 
     private int getItemIndex(String address){
@@ -194,6 +203,43 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
 
         return -1;
     }
+
+    /* RecyclerView Reset ----------------------------------------------------------------------------------------------------------------*/
+    // Update List 랑 remove List 는 없애면 안댐
+    private void resetList() {
+        if(isScanningWithToast())
+            return;
+
+        ResetDialogClickListener resetDialogClickListener = checked -> {
+            if(checked)
+                blackList.clear();
+
+            scannedMap.clear();
+            scannedList.clear();
+
+        };
+
+        ResetDialog resetDialog = new ResetDialog(MainActivity.this, resetDialogClickListener);
+        resetDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        resetDialog.setCancelable(false);
+        resetDialog.show();
+//
+//        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+//        alertDialog.setTitle("스캔된 리스트 초기화");
+//        alertDialog.setMessage("리스트를 초기화 하시겠습니까?");
+//        alertDialog.setPositiveButton("초기화", ((dialog, which) -> {
+//            scannedMap.clear();
+//            scannedList.clear();
+//        }));
+//        alertDialog.setNegativeButton("취소", ((dialog, which) -> {
+//            alertDialog.create().dismiss();
+//        }));
+//
+//        alertDialog.setCancelable(false);
+//        alertDialog.create().show();
+    }
+
+    /* RecyclerView Update Timer ---------------------------------------------------------------------------------------------------------*/
 
     private void startViewUpdate(){
         viewUpdateTimer = new Timer();
@@ -221,26 +267,6 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
         }
 
         return false;
-    }
-
-    // Update List 랑 remove List 는 없애면 안댐
-    private void resetList() {
-        if(isScanningWithToast())
-            return;
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("스캔된 리스트 초기화");
-        alertDialog.setMessage("리스트를 초기화 하시겠습니까?");
-        alertDialog.setPositiveButton("초기화", ((dialog, which) -> {
-            scannedMap.clear();
-            scannedList.clear();
-        }));
-        alertDialog.setNegativeButton("취소", ((dialog, which) -> {
-            alertDialog.create().dismiss();
-        }));
-
-        alertDialog.setCancelable(false);
-        alertDialog.create().show();
     }
 
     /* Bluetooth ------------------------------------------------------------------------------------------------------------------------*/
@@ -284,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
 
             newDevice = newData.get(key);
 
-            if(removeMap.containsKey(key) || newDevice == null)                         // 1. remove 리스트에 있거나 null 이면 continue
+            if(blackList.containsKey(key) || newDevice == null)                         // 1. remove 리스트에 있거나 null 이면 continue
                 continue;
 
             if(scannedMap.containsKey(key))                                             // 2. scannedDevices 에 존재하면

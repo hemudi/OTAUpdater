@@ -64,7 +64,7 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ViewHolder> im
     /* Interface State Button Click Listener */
     public interface OnStateButtonClickListener {
         void onStateClick(DeviceInfo deviceInfo);
-        void removeDevice(String address);
+        void removeDevice(DeviceInfo deviceInfo);
     }
 
     public void setOnStateButtonClickListener(OnStateButtonClickListener onStateButtonClickListener){
@@ -117,8 +117,7 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ViewHolder> im
 
     @Override
     public void onItemSwipe(int position) {
-        DeviceInfo removeDevice = dataList.get(position);
-        dataList.remove(position);
-        onStateButtonClickListener.removeDevice(removeDevice.getAddress());
+        onStateButtonClickListener.removeDevice(dataList.get(position));
+        //dataList.remove(position); => 여기서 없애면 안대나? 어차피 밖에서 없앨거니까?
     }
 }
