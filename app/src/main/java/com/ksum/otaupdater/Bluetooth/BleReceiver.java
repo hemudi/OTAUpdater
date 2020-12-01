@@ -13,6 +13,8 @@ public class BleReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
 
+        Log.d(Tag.BLE_RECEIVER, "BleReceiver onReceive!");
+
         if(action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)){
             final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
 

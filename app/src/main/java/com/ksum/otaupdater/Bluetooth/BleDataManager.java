@@ -31,6 +31,8 @@ public class BleDataManager {
     public void bindReceiver(DataReceiver dataReceiver){
         unbindReceiver();
         this.dataReceiver = dataReceiver;
+        if(dataReceiver != null)
+            Log.d(Tag.RECYCLER_TEST, "bind Receiver Success");
     }
 
     public void unbindReceiver(){
@@ -46,19 +48,24 @@ public class BleDataManager {
 
         DeviceInfo newDevice = new DeviceInfo(name, address, connectable, scanRecord, rxBleDevice);
 
-        Log.d(Tag.BLE_DATA_MANAGER, "New Device : " + address);
+        //Log.d(Tag.BLE_DATA_MANAGER, "New Device : " + address);
+        scannedDevices.put(address, newDevice);
     }
 
     private void sendToActivity(){
+
         if(dataReceiver == null){
             Log.d(Tag.BLE_DATA_MANAGER, "sendToActivity() - dataReceiver -> null");
             return;
+        }
+        else {
+            Log.d(Tag.RECYCLER_TEST, "bind Receiver is not null!");
         }
 
         dataReceiver.scanCallback(scannedDevices);
     }
 
-    public synchronized void startTimer(DataReceiver dataReceiver) {
+    public synchronized void startTimer() {
         stopTimer();
 
         dataSendTimer = new Timer();
@@ -73,7 +80,6 @@ public class BleDataManager {
     }
 
     public synchronized void stopTimer(){
-        this.dataReceiver = null;
 
         if(dataSendTimer != null){
             dataSendTimer.cancel();

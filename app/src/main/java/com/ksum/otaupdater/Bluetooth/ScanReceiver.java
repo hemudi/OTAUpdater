@@ -24,7 +24,7 @@ public class ScanReceiver extends BroadcastReceiver {
             return;
         }
 
-        Log.d(Tag.SCAN_RECEIVER, "ScanReceiver onReceive!");
+        //Log.d(Tag.SCAN_RECEIVER, "ScanReceiver onReceive!");
 
         scanResultProcess(intent);
 
