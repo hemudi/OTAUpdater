@@ -1,21 +1,13 @@
 package com.ksum.otaupdater.Activity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.ItemTouchHelper.Callback;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,7 +20,6 @@ import com.ksum.otaupdater.Adapter.ScanAdapter;
 import com.ksum.otaupdater.Adapter.UpdateAdapter;
 import com.ksum.otaupdater.Bluetooth.BleDataManager;
 import com.ksum.otaupdater.Bluetooth.BleManager;
-import com.ksum.otaupdater.Bluetooth.BleReceiver;
 import com.ksum.otaupdater.Bluetooth.BleScanner;
 import com.ksum.otaupdater.Interface.DataReceiver;
 import com.ksum.otaupdater.ItemTouchHelper.ItemTouchHelperCallback;
@@ -131,11 +122,19 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
         rvScan.setAdapter(scanAdapter);
         rvUpdate.setAdapter(updateAdapter);
 
-        scanAdapter.setOnStateButtonClickListener(deviceInfo -> {
-            if(deviceInfo == null)
-                return;
+        scanAdapter.setOnStateButtonClickListener(new ScanAdapter.OnStateButtonClickListener() {
+            @Override
+            public void onStateClick(DeviceInfo deviceInfo) {
+                if(deviceInfo == null)
+                    return;
 
-            addUpdateList(deviceInfo);
+                addUpdateList(deviceInfo);
+            }
+
+            @Override
+            public void removeDevice(String address) {
+
+            }
         });
 
         updateAdapter.setOnRemoveButtonClickListener(deviceInfo -> {
@@ -144,25 +143,8 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
             removeUpdateList(deviceInfo);
         });
 
-//        itemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(scanAdapter));
-//        itemTouchHelper.attachToRecyclerView(rvScan);
-
-        ItemTouchHelper.SimpleCallback touchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                Toast.makeText(MainActivity.this, "Swipe!", Toast.LENGTH_SHORT).show();
-            }
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
+        itemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(0, ItemTouchHelper.LEFT, scanAdapter));
         itemTouchHelper.attachToRecyclerView(rvScan);
-
-
 
     }
 
@@ -191,6 +173,17 @@ public class MainActivity extends AppCompatActivity implements DataReceiver {
         }
 
         changeRvUpdateVisibility();                               // 업데이트 리스트 visibility 변경
+    }
+
+    private void addRemoveMap(DeviceInfo deviceInfo){
+        if(deviceInfo == null)
+            return;
+
+        if(deviceInfo.isWaiting() || deviceInfo.isUpdating())
+            return;
+
+        scannedList.remove(deviceInfo);                           // 스캔 리스트에서 삭제
+        removeMap.put(deviceInfo.getAddress(), deviceInfo);       // 업데이트 리스트에 추가
     }
 
     private int getItemIndex(String address){

@@ -51,19 +51,20 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ViewHolder> im
             ButterKnife.bind(this, itemView);
 
             /* stateImage onClick */
-//            stateImage.setOnClickListener(v -> {
-//                int position = getAdapterPosition();
-//
-//                if(position != RecyclerView.NO_POSITION) {
-//                    onStateButtonClickListener.onStateClick(dataList.get(position));
-//                }
-//            });
+            stateImage.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+
+                if(position != RecyclerView.NO_POSITION) {
+                    onStateButtonClickListener.onStateClick(dataList.get(position));
+                }
+            });
         }
     }
 
     /* Interface State Button Click Listener */
     public interface OnStateButtonClickListener {
         void onStateClick(DeviceInfo deviceInfo);
+        void removeDevice(String address);
     }
 
     public void setOnStateButtonClickListener(OnStateButtonClickListener onStateButtonClickListener){
@@ -116,7 +117,8 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ViewHolder> im
 
     @Override
     public void onItemSwipe(int position) {
-        //items.remove(position);
-        Toast.makeText(context, "스와이프", Toast.LENGTH_SHORT).show();
+        DeviceInfo removeDevice = dataList.get(position);
+        dataList.remove(position);
+        onStateButtonClickListener.removeDevice(removeDevice.getAddress());
     }
 }
