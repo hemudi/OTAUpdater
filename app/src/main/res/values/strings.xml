@@ -11,11 +11,17 @@
     <string name="button_reset">Reset List</string>
     <string name="button_scan_start">Start Scanning</string>
     <string name="button_scan_stop">Stop Scanning</string>
+    <string name="button_file_refresh">REFRESH</string>
+    <string name="button_file_cancel">X</string>
 
     <!-- TextView Sample Text -->
     <string name="item_address">Mac Address</string>
     <string name="item_device_name">Device Name</string>
     <string name="item_connectable">NonConnectable / Connectable</string>
+    <string name="file_recent">Recent : 00/00/00 PM 00:00</string>
+    <string name="file_application_title">Application</string>
+    <string name="file_app_loader_title">AppLoader</string>
+    <string name="file_no_file">No File</string>
 
     <!-- Device State Text -->
     <string name="item_state_updatable">업데이트 가능</string>
