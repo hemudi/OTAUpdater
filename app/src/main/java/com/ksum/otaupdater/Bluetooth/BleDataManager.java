@@ -31,8 +31,9 @@ public class BleDataManager {
     public void bindReceiver(DataReceiver dataReceiver){
         unbindReceiver();
         this.dataReceiver = dataReceiver;
-        if(dataReceiver != null)
-            Log.d(Tag.RECYCLER_TEST, "bind Receiver Success");
+
+        if(dataReceiver == null)
+            Log.d(Tag.RECYCLER_TEST, "bind Receiver is null!");
     }
 
     public void unbindReceiver(){
@@ -58,10 +59,6 @@ public class BleDataManager {
             Log.d(Tag.BLE_DATA_MANAGER, "sendToActivity() - dataReceiver -> null");
             return;
         }
-        else {
-            Log.d(Tag.RECYCLER_TEST, "bind Receiver is not null!");
-        }
-
         dataReceiver.scanCallback(scannedDevices);
     }
 

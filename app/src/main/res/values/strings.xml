@@ -13,6 +13,8 @@
     <string name="button_scan_stop">Stop Scanning</string>
     <string name="button_file_refresh">REFRESH</string>
     <string name="button_file_cancel">X</string>
+    <string name="button_update_list_gone">▲</string>
+    <string name="button_update_list_wide">▼</string>
 
     <!-- TextView Sample Text -->
     <string name="item_address">Mac Address</string>
@@ -22,6 +24,14 @@
     <string name="file_application_title">Application</string>
     <string name="file_app_loader_title">AppLoader</string>
     <string name="file_no_file">No File</string>
+
+    <!-- dialog_quest_reset -->
+    <string name="reset_dialog_title">리스트 초기화</string>
+    <string name="reset_dialog_sub_title">초기화 하고 싶은 리스트를 선택해주세요</string>
+    <string name="check_scan">스캔 리스트</string>
+    <string name="check_update">업데이트 리스트</string>
+    <string name="check_black">블랙 리스트</string>
+
 
     <!-- Device State Text -->
     <string name="item_state_updatable">업데이트 가능</string>
@@ -44,6 +54,7 @@
     <string name="toast_scanning">스캔 중입니다.</string>
     <string name="toast_scanning_retry">스캔 중입니다! 스캔을 중단하고 다시 시도해주세요!</string>
     <string name="toast_reset_list">리스트가 초기화되었습니다.</string>
+    <string name="toast_reset_all_unchecked">선택 된 리스트가 없습니다!</string>
 
     <!-- Device Default Text -->
     <string name="device_default_name">No Name</string>

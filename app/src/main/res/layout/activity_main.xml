@@ -46,7 +46,7 @@
         <FrameLayout
             android:id="@+id/frame_blank"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></FrameLayout>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
@@ -69,7 +69,41 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"></androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"/>
+
+        <LinearLayout
+            android:id="@+id/container_button_update_list"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
+
+            <Button
+                android:id="@+id/button_list_toggle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/purple_200"
+                android:text="@string/button_update_list_gone"
+                android:textSize="10sp"
+                tools:ignore="SmallSp"
+                />
+
+            <Button
+                android:id="@+id/button_list_wide"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/purple_200"
+                android:text="@string/button_update_list_wide"
+                android:textSize="10sp"
+                tools:ignore="SmallSp"
+                android:visibility="gone"
+                />
+
+        </LinearLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_device_list"
@@ -79,7 +113,8 @@
             android:background="@color/background_scanned_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"></androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -118,6 +153,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/container_bottom_button"
         app:layout_constraintEnd_toEndOf="@+id/container_recyclerview"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_toolbar"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/container_toolbar"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

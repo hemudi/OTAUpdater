@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ksum.otaupdater.Bluetooth.BleManager;
 import com.ksum.otaupdater.Bluetooth.BleReceiver;
+import com.ksum.otaupdater.Bluetooth.ScanReceiver;
 import com.ksum.otaupdater.Log.Tag;
 import com.ksum.otaupdater.R;
 
@@ -19,6 +20,9 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class IntroActivity extends AppCompatActivity {
+
+    BleReceiver bleReceiver;
+    ScanReceiver scanReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +32,7 @@ public class IntroActivity extends AppCompatActivity {
         if(isBleSupported()){
             checkBluetoothEnable();
 
-            registerBleReceiver();
+            registerReceiver();
 
             Intent toMainIntent = new Intent(IntroActivity.this, MainActivity.class);
             startActivity(toMainIntent);
@@ -39,6 +43,12 @@ public class IntroActivity extends AppCompatActivity {
 
         finish();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterAll();
     }
 
     private boolean isBleSupported(){
@@ -55,10 +65,21 @@ public class IntroActivity extends AppCompatActivity {
             BleManager.getInstance().setBleEnable();
     }
 
-    private void registerBleReceiver(){
+    private void registerReceiver(){
+        /* BleReceiver */
         IntentFilter bleIntentFilter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        BleReceiver bleReceiver = new BleReceiver();
+        bleReceiver = new BleReceiver();
         registerReceiver(bleReceiver, bleIntentFilter);
+
+        /* ScanReceiver */
+        IntentFilter scanIntentFilter = new IntentFilter("ScanResult");
+        scanReceiver = new ScanReceiver();
+        registerReceiver(scanReceiver, scanIntentFilter);
+    }
+
+    private void unregisterAll(){
+        unregisterReceiver(bleReceiver);
+        unregisterReceiver(scanReceiver);
     }
 
 }

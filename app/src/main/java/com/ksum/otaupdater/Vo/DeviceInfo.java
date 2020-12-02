@@ -12,6 +12,7 @@ public class DeviceInfo {
     private int failedCount;
     private boolean isWaiting;      // 대기열에서 대기 중
     private boolean isUpdating;     // 업데이트 중
+    private boolean isFailed;       // 업데이트 실패
 
     public DeviceInfo(String name, String address, String connectable, ScanRecord scanRecord, RxBleDevice bleDevice) {
         this.name = name;

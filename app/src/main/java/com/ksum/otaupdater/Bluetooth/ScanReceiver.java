@@ -1,5 +1,6 @@
 package com.ksum.otaupdater.Bluetooth;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,14 @@ public class ScanReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        final String action = intent.getAction();
+
+        if(!action.equals("ScanResult")){
+            Log.d(Tag.SCAN_RECEIVER, "difference action");
+            return;
+        }
+
         if(BleScanner.getInstance().getRxBleClient() == null){
             Log.d(Tag.SCAN_RECEIVER, "rxBleClient -> null");
             return;
@@ -27,7 +36,6 @@ public class ScanReceiver extends BroadcastReceiver {
         //Log.d(Tag.SCAN_RECEIVER, "ScanReceiver onReceive!");
 
         scanResultProcess(intent);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

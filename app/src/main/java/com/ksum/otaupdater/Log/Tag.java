@@ -12,4 +12,5 @@ public class Tag {
     public static final String SCAN_TEXT = "SCAN_TEST";
     public static final String RECYCLER_TEST = "RECYCLER_TEST";
     public static final String STATE_CLICK_EVENT = "STATE_CLICK_EVENT";
+    public static final String BLACK_TEST = "BLACK_TEST";
 }

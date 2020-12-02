@@ -76,19 +76,19 @@ public class BleScanner {
         stopScan();
         setScanSettings();
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            scanProcessBackground();
-            Log.d(Tag.SCAN_TEXT, "scanProcessBackground");
-            return true;
-        }
-
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+//            scanProcessBackground();
+//            Log.d(Tag.SCAN_TEXT, "scanProcessBackground");
+//            return true;
+//        }
+//
+//        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
             scanProcess();
             Log.d(Tag.SCAN_TEXT, "scanProcess");
             return true;
-        }
-
-        return false;
+//        }
+//
+//        return false;
     }
 
     /* ScanFilter 설정 */

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     >
 
@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:background="#020000"
         android:gravity="center"
-        android:text="리스트 초기화"
+        android:text="@string/reset_dialog_title"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -23,16 +23,40 @@
         android:gravity="start|center"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:text="스캔 리스트를 초기화 하시겠습니까?"
+        android:text="@string/reset_dialog_sub_title"
         android:textColor="#000000"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:visibility="gone"
+        />
 
     <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/checkbox_remove"
+        android:id="@+id/checkbox_scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:text="블랙 리스트 초기화"
+        android:text="@string/check_scan"
+        android:gravity="start|center"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/check_black"
+        android:gravity="start|center"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkbox_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="@string/check_update"
         android:gravity="start|center"
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
@@ -45,14 +69,14 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button_reset_cancel"
+            android:id="@+id/reset_cancel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="취소" />
 
         <Button
-            android:id="@+id/button_reset_confirm"
+            android:id="@+id/reset_confirm"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

@@ -32,7 +32,7 @@
         <activity android:name=".Activity.MainActivity"/>
 
         <receiver android:name=".Bluetooth.BleReceiver" android:enabled="true"/>
-        <receiver android:name=".Bluetooth.ScanReceiver"/>
+        <!--<receiver android:name=".Bluetooth.ScanReceiver" android:enabled="true"/>-->
 
     </application>
 
